@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stackbirds — Record once. Run forever. The self-trained agent.</title>
+<meta name="description" content="Stackbirds.xyz is the world's first self-trained agent. Record any browser workflow once and it runs forever — no prompts, no code, no babysitting. Add to Chrome or download to your computer and see the magic. Plug and play templates, voice-bot guide, case studies and DIY marketing for every industry." />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b6e64'/%3E%3Cpath d='M8 21l5-9 3 5 3-7 5 11z' fill='none' stroke='%23f6f7f5' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E" />
+<style>
+:root,
+[data-theme='light'] {
+  --color-bg: #f6f7f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f4f1;
+  --color-surface-offset: #eaf0ec;
+  --color-divider: #e1e7e3;
+  --color-border: #d5ddd9;
+  --color-text: #14201c;
+  --color-text-muted: #566863;
+  --color-text-faint: #97a6a1;
+  --color-text-inverse: #f6f7f5;
+  --color-primary: #0b6e64;
+  --color-primary-hover: #084f48;
+  --color-primary-soft: #d7ece7;
+  --color-accent: #c97f1a;
+  --color-accent-hover: #a8660f;
+  --color-accent-soft: #f6e7cf;
+  --shadow-sm: 0 1px 2px rgba(20,32,28,.06);
+  --shadow-md: 0 6px 24px rgba(20,32,28,.08);
+  --shadow-lg: 0 24px 60px rgba(20,32,28,.12);
+}
+[data-theme='dark'] {
+  --color-bg: #0b1311;
+  --color-surface: #111a17;
+  --color-surface-2: #16201d;
+  --color-surface-offset: #1a2622;
+  --color-divider: #21302c;
+  --color-border: #283733;
+  --color-text: #d9e3de;
+  --color-text-muted: #8b9c96;
+  --color-text-faint: #5a6c66;
+  --color-text-inverse: #0c1311;
+  --color-primary: #4fc9b8;
+  --color-primary-hover: #6fd9ca;
+  --color-primary-soft: #15302b;
+  --color-accent: #f0a948;
+  --color-accent-hover: #f6bd6b;
+  --color-accent-soft: #2f2410;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 6px 24px rgba(0,0,0,.4);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.55);
+}
+
+:root {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+  --text-3xl: clamp(2.5rem, 1rem + 4vw, 5rem);
+  --text-hero: clamp(2.75rem, 0.5rem + 7vw, 7.5rem);
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem; --space-32: 8rem;
+  --radius-sm: 0.375rem; --radius-md: 0.625rem; --radius-lg: 1rem; --radius-xl: 1.5rem; --radius-full: 9999px;
+  --transition: 200ms cubic-bezier(0.16,1,0.3,1);
+  --font-display: 'Cabinet Grotesk', 'Satoshi', system-ui, sans-serif;
+  --font-body: 'Satoshi', system-ui, -apple-system, sans-serif;
+  --content: 1180px;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { min-height: 100dvh; line-height: 1.6; font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); }
+img,svg { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; color: inherit; background: none; border: none; }
+h1,h2,h3,h4 { font-family: var(--font-display); line-height: 1.08; text-wrap: balance; font-weight: 700; letter-spacing: -0.02em; }
+p,li,figcaption { text-wrap: pretty; max-width: 70ch; }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+::selection { background: color-mix(in oklab, var(--color-primary) 30%, transparent); }
+
+/* ===== Header ===== */
+header.site {
+  position: sticky; top: 0; z-index: 100;
+  background: color-mix(in oklab, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-divider);
+}
+.nav { max-width: var(--content); margin: 0 auto; padding: var(--space-4) var(--space-6); display: flex; align-items: center; gap: var(--space-6); }
+.brand { display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-display); font-weight: 800; font-size: var(--text-lg); letter-spacing: -0.03em; }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.nav-links { display: flex; gap: var(--space-6); margin-left: auto; align-items: center; }
+.nav-links a { font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); transition: color var(--transition); }
+.nav-links a:hover { color: var(--color-text); }
+.theme-toggle { width: 38px; height: 38px; display: grid; place-items: center; border-radius: var(--radius-full); border: 1px solid var(--color-border); color: var(--color-text-muted); transition: all var(--transition); }
+.theme-toggle:hover { color: var(--color-text); border-color: var(--color-primary); }
+.nav-cta { padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); background: var(--color-primary); color: var(--color-text-inverse); font-weight: 700; font-size: var(--text-sm); }
+.nav-cta:hover { background: var(--color-primary-hover); }
+@media (max-width: 880px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+/* ===== Layout ===== */
+.wrap { max-width: var(--content); margin: 0 auto; padding: 0 var(--space-6); }
+section { padding-block: clamp(var(--space-16), 8vw, var(--space-32)); }
+.eyebrow { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-primary); display: inline-flex; align-items: center; gap: var(--space-2); }
+.eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 12px var(--color-accent); }
+.sec-head { margin-bottom: var(--space-12); max-width: 760px; }
+.sec-head h2 { font-size: var(--text-2xl); margin-top: var(--space-4); }
+.sec-head p { margin-top: var(--space-4); color: var(--color-text-muted); font-size: var(--text-lg); }
+.lead { color: var(--color-text-muted); font-size: var(--text-lg); }
+
+/* ===== Buttons ===== */
+.btn { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-radius: var(--radius-full); font-weight: 700; font-size: var(--text-sm); transition: all var(--transition); border: 1px solid transparent; }
+.btn-primary { background: var(--color-primary); color: var(--color-text-inverse); }
+.btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-accent { background: var(--color-accent); color: #1a1206; }
+.btn-accent:hover { background: var(--color-accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-ghost { border-color: var(--color-border); color: var(--color-text); background: var(--color-surface); }
+.btn-ghost:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.btn svg { width: 18px; height: 18px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+/* ===== Hero ===== */
+.hero { position: relative; overflow: hidden; padding-top: clamp(var(--space-16), 6vw, var(--space-24)); }
+.hero-bg { position: absolute; inset: 0; z-index: -1; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0.55; }
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 35%, transparent) 0%, var(--color-bg) 78%); }
+.hero-inner { max-width: var(--content); margin: 0 auto; padding: var(--space-6); }
+.hero h1 { font-size: var(--text-hero); font-weight: 800; max-width: 13ch; margin-top: var(--space-6); }
+.hero h1 .accent { color: var(--color-accent); }
+.hero p.sub { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 52ch; margin-top: var(--space-6); }
+.hero .btn-row { margin-top: var(--space-8); }
+.status-row { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-10); }
+.chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); border: 1px solid var(--color-border); background: color-mix(in oklab, var(--color-surface) 70%, transparent); font-size: var(--text-sm); font-weight: 500; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 10px var(--color-primary); }
+.chip .dot.live { background: #e44; box-shadow: 0 0 10px #e44; animation: pulse 1.6s infinite; }
+.chip .dot.rec { background: var(--color-accent); box-shadow: 0 0 10px var(--color-accent); animation: pulse 1.2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+.hero-metrics { display: flex; flex-wrap: wrap; gap: var(--space-8); margin-top: var(--space-12); padding-top: var(--space-8); border-top: 1px solid var(--color-divider); }
+.metric .n { font-family: var(--font-display); font-weight: 800; font-size: var(--text-xl); color: var(--color-primary); }
+.metric .l { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+/* ===== Demo terminal ===== */
+.demo { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
+.demo-bar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-divider); background: var(--color-surface-2); }
+.demo-dots { display: flex; gap: 7px; }
+.demo-dots i { width: 12px; height: 12px; border-radius: 50%; background: var(--color-border); display: block; }
+.demo-dots i:nth-child(1){background:#e5534b}.demo-dots i:nth-child(2){background:#e6b13a}.demo-dots i:nth-child(3){background:#46c46a}
+.demo-url { margin-left: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted); font-family: var(--font-body); padding: var(--space-1) var(--space-4); border-radius: var(--radius-full); background: var(--color-surface-offset); border: 1px solid var(--color-divider); }
+.demo-url b { color: var(--color-primary); }
+.demo-body { display: grid; grid-template-columns: 230px 1fr; min-height: 360px; }
+@media (max-width:760px){ .demo-body { grid-template-columns: 1fr; } }
+.demo-steps { border-right: 1px solid var(--color-divider); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); background: var(--color-surface-2); }
+.dstep { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3); border-radius: var(--radius-md); font-size: var(--text-sm); transition: all var(--transition); border: 1px solid transparent; }
+.dstep .dnum { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: var(--text-xs); font-weight: 700; background: var(--color-surface-offset); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+.dstep.active { background: var(--color-primary-soft); border-color: var(--color-primary); }
+.dstep.active .dnum { background: var(--color-primary); color: var(--color-text-inverse); border-color: var(--color-primary); }
+.dstep.done .dnum { background: var(--color-primary); color: var(--color-text-inverse); }
+.dstep.done .dnum::after { content: "✓"; }
+.dstep.done .dnum span { display: none; }
+.dstep strong { display: block; font-weight: 700; }
+.dstep span.tm { color: var(--color-text-faint); font-size: var(--text-xs); }
+.demo-screen { padding: var(--space-6); font-family: var(--font-body); position: relative; overflow: hidden; }
+.screen-pan { display: none; flex-direction: column; gap: var(--space-3); }
+.screen-pan.on { display: flex; }
+.line { font-size: var(--text-sm); color: var(--color-text-muted); display: flex; gap: var(--space-3); align-items: flex-start; }
+.line .prompt { color: var(--color-primary); font-weight: 700; flex: none; }
+.line.ok { color: var(--color-text); }
+.line .tag { font-size: var(--text-xs); padding: 2px 8px; border-radius: var(--radius-full); background: var(--color-primary-soft); color: var(--color-primary); font-weight: 700; }
+.cursor { display: inline-block; width: 9px; height: 1.1em; background: var(--color-accent); vertical-align: text-bottom; animation: blink 1s steps(1) infinite; border-radius: 1px; }
+@keyframes blink { 50%{opacity:0} }
+.demo-play { margin-left: auto; }
+.demo-controls { display: flex; gap: var(--space-2); }
+.demo-controls button { padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); border: 1px solid var(--color-border); font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); }
+.demo-controls button.on { background: var(--color-primary); color: var(--color-text-inverse); border-color: var(--color-primary); }
+
+/* ===== Generic cards grid ===== */
+.grid { display: grid; gap: var(--space-5); }
+.g2 { grid-template-columns: repeat(2,1fr); }
+.g3 { grid-template-columns: repeat(3,1fr); }
+.g4 { grid-template-columns: repeat(4,1fr); }
+@media (max-width:980px){ .g3,.g4 { grid-template-columns: repeat(2,1fr);} }
+@media (max-width:620px){ .g2,.g3,.g4 { grid-template-columns: 1fr; } }
+
+.card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); transition: all var(--transition); }
+.card:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.card .ico { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--color-primary-soft); color: var(--color-primary); display: grid; place-items: center; margin-bottom: var(--space-4); }
+.card .ico svg { width: 22px; height: 22px; }
+.card h3 { font-size: var(--text-lg); }
+.card p { color: var(--color-text-muted); margin-top: var(--space-3); font-size: var(--text-sm); }
+.card .tag { font-size: var(--text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-2); display:block; }
+
+/* ===== Industry selector ===== */
+.industry-pick { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-10); }
+.ind-btn { padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); border: 1px solid var(--color-border); background: var(--color-surface); font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); transition: all var(--transition); }
+.ind-btn:hover { color: var(--color-text); border-color: var(--color-primary); }
+.ind-btn.on { background: var(--color-primary); color: var(--color-text-inverse); border-color: var(--color-primary); }
+.ind-panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-8); box-shadow: var(--shadow-md); }
+.ind-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-6); }
+.ind-head .badge { padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); background: var(--color-accent-soft); color: var(--color-accent); font-size: var(--text-xs); font-weight: 700; }
+.ind-head h3 { font-size: var(--text-xl); }
+.ind-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+@media (max-width:760px){ .ind-cols { grid-template-columns: 1fr; } }
+.ind-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); }
+.ind-list li { display: flex; gap: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); }
+.ind-list li svg { width: 18px; height: 18px; color: var(--color-primary); flex: none; margin-top: 2px; }
+.seo-box { background: var(--color-surface-2); border-radius: var(--radius-lg); padding: var(--space-5); border: 1px solid var(--color-divider); }
+.seo-box h4 { font-size: var(--text-sm); font-family: var(--font-body); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--space-3); }
+.seo-box p { font-size: var(--text-sm); color: var(--color-text); }
+.seo-kw { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.seo-kw span { font-size: var(--text-xs); padding: 4px 10px; border-radius: var(--radius-full); background: var(--color-primary-soft); color: var(--color-primary); font-weight: 600; }
+
+/* ===== Voice bot ===== */
+.voice { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-8); align-items: center; }
+@media (max-width:860px){ .voice { grid-template-columns: 1fr; } }
+.voice-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-8); box-shadow: var(--shadow-lg); }
+.vc-top { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6); }
+.vc-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--color-primary); display: grid; place-items: center; flex: none; }
+.vc-avatar svg { width: 26px; height: 26px; color: var(--color-text-inverse); }
+.vc-name { font-family: var(--font-display); font-weight: 700; font-size: var(--text-lg); }
+.vc-status { font-size: var(--text-xs); color: var(--color-primary); display: flex; align-items: center; gap: 6px; }
+.vc-status::before { content:""; width:8px;height:8px;border-radius:50%; background:var(--color-primary); box-shadow:0 0 8px var(--color-primary); }
+.wave { display: flex; align-items: center; gap: 3px; height: 64px; margin: var(--space-6) 0; }
+.wave i { flex: 1; background: var(--color-primary); border-radius: 2px; opacity: .35; transition: opacity .15s; min-width: 3px; }
+.wave.playing i { animation: wave 1s ease-in-out infinite alternate; opacity: .8; }
+.wave i:nth-child(2n) { background: var(--color-accent); }
+@keyframes wave { 0%{height:14%} 100%{height:100%} }
+.vc-controls { display: flex; align-items: center; gap: var(--space-4); }
+.vc-play { width: 52px; height: 52px; border-radius: 50%; background: var(--color-accent); color: #1a1206; display: grid; place-items: center; flex: none; transition: all var(--transition); }
+.vc-play:hover { transform: scale(1.06); background: var(--color-accent-hover); }
+.vc-play svg { width: 22px; height: 22px; }
+.vc-time { font-size: var(--text-sm); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+.vc-bar { flex: 1; height: 5px; border-radius: 99px; background: var(--color-divider); overflow: hidden; }
+.vc-bar i { display: block; height: 100%; width: 0%; background: var(--color-accent); transition: width .2s linear; }
+.transcript { background: var(--color-surface-2); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-6); max-height: 320px; overflow: auto; }
+.transcript h4 { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-muted); margin-bottom: var(--space-3); }
+.transcript p { font-size: var(--text-sm); line-height: 1.7; color: var(--color-text); }
+
+/* ===== Case studies ===== */
+.cases { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-5); }
+@media (max-width:980px){ .cases { grid-template-columns: repeat(2,1fr);} }
+@media (max-width:620px){ .cases { grid-template-columns: 1fr; } }
+.case { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); transition: all var(--transition); }
+.case:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.case .row1 { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.case .num { font-family: var(--font-display); font-weight: 800; color: var(--color-text-faint); font-size: var(--text-sm); }
+.case .type { font-size: var(--text-xs); font-weight: 700; color: var(--color-accent); text-transform: uppercase; letter-spacing: .08em; }
+.case h3 { font-size: var(--text-lg); }
+.case p { font-size: var(--text-sm); color: var(--color-text-muted); flex: 1; }
+.case .stat { font-size: var(--text-xs); color: var(--color-primary); font-weight: 700; border-top: 1px solid var(--color-divider); padding-top: var(--space-3); }
+
+/* ===== CTA banner ===== */
+.cta-band { position: relative; overflow: hidden; background: var(--color-surface-offset); border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: clamp(var(--space-12), 5vw, var(--space-24)); text-align: center; }
+.cta-band::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 50% 0%, color-mix(in oklab, var(--color-primary) 18%, transparent), transparent 60%); }
+.cta-band > * { position: relative; }
+.cta-band h2 { font-size: var(--text-2xl); max-width: 18ch; margin: 0 auto var(--space-4); }
+.cta-band p { color: var(--color-text-muted); margin: 0 auto var(--space-8); max-width: 56ch; }
+.cta-band .btn-row { justify-content: center; }
+
+/* ===== Features / steps ===== */
+.steps { counter-reset: st; display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-5); }
+@media (max-width:880px){ .steps { grid-template-columns: 1fr; } }
+.step-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-8); }
+.step-card .step-tag { font-size: var(--text-xs); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--color-primary); }
+.step-card h3 { font-size: var(--text-xl); margin: var(--space-3) 0 var(--space-4); }
+.step-card p { color: var(--color-text-muted); }
+.step-card .clock { margin-top: var(--space-5); font-size: var(--text-sm); font-weight: 700; color: var(--color-accent); display:inline-flex; gap:6px; align-items:center; }
+
+/* ===== DIY marketing ===== */
+.diy-list { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-8); }
+.diy-item { display: grid; grid-template-columns: 40px 1fr auto; gap: var(--space-4); align-items: start; padding: var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.diy-num { width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: var(--color-text-inverse); display: grid; place-items: center; font-weight: 700; font-size: var(--text-sm); }
+.diy-item h4 { font-size: var(--text-base); font-family: var(--font-body); font-weight: 700; }
+.diy-item p { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-1); }
+.diy-item .tool { font-size: var(--text-xs); font-weight: 700; color: var(--color-accent); padding: 4px 10px; border: 1px solid var(--color-divider); border-radius: var(--radius-full); white-space: nowrap; }
+
+/* ===== FAQ ===== */
+.faq { display: flex; flex-direction: column; gap: var(--space-3); max-width: 820px; }
+.faq-item { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); overflow: hidden; }
+.faq-q { width: 100%; text-align: left; padding: var(--space-5); display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); font-weight: 700; font-family: var(--font-display); font-size: var(--text-base); }
+.faq-q .pm { flex: none; color: var(--color-primary); font-size: var(--text-lg); transition: transform var(--transition); }
+.faq-item.open .pm { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.faq-a div { padding: 0 var(--space-5) var(--space-5); color: var(--color-text-muted); }
+
+/* ===== Footer ===== */
+footer.site { border-top: 1px solid var(--color-divider); padding-block: var(--space-16) var(--space-12); margin-top: var(--space-20); }
+.foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--space-8); }
+@media (max-width:760px){ .foot { grid-template-columns: 1fr 1fr; } }
+.foot .brand { margin-bottom: var(--space-4); }
+.foot p { color: var(--color-text-muted); font-size: var(--text-sm); }
+.foot h5 { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-muted); margin-bottom: var(--space-3); }
+.foot ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.foot ul a { font-size: var(--text-sm); color: var(--color-text-muted); }
+.foot ul a:hover { color: var(--color-primary); }
+.foot-bottom { max-width: var(--content); margin: var(--space-12) auto 0; padding: var(--space-6) var(--space-6) 0; border-top: 1px solid var(--color-divider); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-faint); }
+.foot-bottom a { color: var(--color-text-muted); }
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce){ .reveal { opacity:1; transform:none; } .wave i { animation: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="brand" aria-label="Stackbirds home">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect width="40" height="40" rx="10" fill="var(--color-primary)"/>
+        <path d="M9 27 L16 13 L20.5 21 L25 11 L31 27 Z" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="31" cy="27" r="2.4" fill="var(--color-accent)"/>
+      </svg>
+      Stackbirds
+    </a>
+    <div class="nav-links">
+      <a href="#demo">Demo</a>
+      <a href="#how">How it works</a>
+      <a href="#industry">Select industry</a>
+      <a href="#templates">Templates</a>
+      <a href="#voice">Voice guide</a>
+      <a href="#marketing">DIY marketing</a>
+      <a href="#cases">Case studies</a>
+      <a href="#faq">FAQ</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="#get" class="nav-cta">Add to Chrome</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero" id="get">
+  <div class="hero-bg"><img src="assets/hero.png" alt="" /></div>
+  <div class="hero-inner">
+    <span class="eyebrow">World's first self-trained agent</span>
+    <h1>Your busywork,<br/>on <span class="accent">autopilot.</span></h1>
+    <p class="sub">Record any browser workflow once. Stackbirds trains an autonomous agent that runs it for you — forever. No prompts. No glue code. No babysitting. No tech knowledge needed — just plug and play.</p>
+    <div class="btn-row">
+      <a class="btn btn-accent" href="#get" id="cta-chrome">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="M21.17 8H12M3.95 6.06l4.09 7.09M10.88 21.94l4.09-7.09"/></svg>
+        Add Stackbirds.xyz to Chrome
+      </a>
+      <a class="btn btn-primary" href="#get" id="cta-download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+        Download to your computer
+      </a>
+    </div>
+    <div class="status-row">
+      <span class="chip"><span class="dot rec"></span> Recording live</span>
+      <span class="chip"><span class="dot live"></span> Agent trained · 4m 12s</span>
+      <span class="chip">3,400+ operators shipping agents this week</span>
+    </div>
+    <div class="hero-metrics">
+      <div class="metric"><div class="n">~5 min</div><div class="l">to your first trained agent</div></div>
+      <div class="metric"><div class="n">0 code</div><div class="l">no prompts, no glue, no APIs</div></div>
+      <div class="metric"><div class="n">Forever</div><div class="l">runs on schedule, on demand, on trigger</div></div>
+      <div class="metric"><div class="n">Free</div><div class="l">first agent free, no card, no sales call</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The full demo</span>
+      <h2>See the whole thing, start to finish.</h2>
+      <p>One workflow — open Gmail, filter by sender, copy the rows to a sheet — recorded once, then run forever. This is exactly what adding Stackbirds.xyz to Chrome looks like.</p>
+    </div>
+    <div class="demo reveal">
+      <div class="demo-bar">
+        <div class="demo-dots"><i></i><i></i><i></i></div>
+        <span class="demo-url">stackbirds.xyz — <b>the nest · training</b></span>
+        <div class="demo-controls" style="margin-left:auto">
+          <button id="replay">Replay</button>
+        </div>
+      </div>
+      <div class="demo-body">
+        <div class="demo-steps">
+          <div class="dstep active" data-step="0"><div class="dnum"><span>1</span></div><div><strong>Record</strong><span class="tm">Show it once · ≈2 min</span></div></div>
+          <div class="dstep" data-step="1"><div class="dnum"><span>2</span></div><div><strong>Train</strong><span class="tm">It watches & asks · ≈5 min</span></div></div>
+          <div class="dstep" data-step="2"><div class="dnum"><span>3</span></div><div><strong>Delegate</strong><span class="tm">Runs forever</span></div></div>
+        </div>
+        <div class="demo-screen" id="screen">
+          <div class="screen-pan on" data-pan="0">
+            <div class="line"><span class="prompt">▸</span> Click Stackbirds extension — <b>start recording</b></div>
+            <div class="line"><span class="prompt">▸</span> open gmail</div>
+            <div class="line"><span class="prompt">▸</span> filter by sender = "invoices@vendor.com"</div>
+            <div class="line"><span class="prompt">▸</span> select all matching</div>
+            <div class="line"><span class="prompt">▸</span> copy to sheet</div>
+            <div class="line ok"><span class="prompt">✓</span> recording stopped <span class="tag">12 fields mapped</span></div>
+            <div class="line"><span class="prompt">›</span> awaiting training<span class="cursor"></span></div>
+          </div>
+          <div class="screen-pan" data-pan="1">
+            <div class="line"><span class="prompt">?</span> "You selected rows where the sender matched — should I also save attachments?"</div>
+            <div class="line ok"><span class="prompt">›</span> Yes, save all PDF attachments <span class="tag">learned</span></div>
+            <div class="line"><span class="prompt">?</span> "If no invoices arrive that day, should I skip or notify you?"</div>
+            <div class="line ok"><span class="prompt">›</span> Notify me in Slack <span class="tag">learned</span></div>
+            <div class="line"><span class="prompt">✓</span> patterns identified · edge cases captured</div>
+            <div class="line"><span class="prompt">›</span> training agent<span class="cursor"></span></div>
+          </div>
+          <div class="screen-pan" data-pan="2">
+            <div class="line ok"><span class="prompt">✓</span> agent trained in 4m 12s</div>
+            <div class="line"><span class="prompt">▸</span> deploy → schedule: every weekday 9:00 GST</div>
+            <div class="line"><span class="prompt">▸</span> trigger: new mail from vendor domain</div>
+            <div class="line ok"><span class="prompt">✓</span> run #1 complete — 7 invoices filed, 7 PDFs saved, Slack notified</div>
+            <div class="line ok"><span class="prompt">✓</span> run #2 complete — 0 invoices, Slack notified</div>
+            <div class="line"><span class="prompt">›</span> running forever<span class="cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:var(--space-6)">That's it. No code written, no API keys, no babysitting. You showed it once — it now owns the job. <a href="#get" style="color:var(--color-accent);font-weight:700">Add Stackbirds.xyz to Chrome</a> or <a href="#get" style="color:var(--color-primary);font-weight:700">download it to your computer</a> and try your own.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:var(--color-surface-2);border-block:1px solid var(--color-divider)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps. One afternoon.</h2>
+      <p>From busywork to background job in less time than it takes to write a Notion doc about it.</p>
+    </div>
+    <div class="steps">
+      <div class="step-card reveal">
+        <span class="step-tag">Step 1 · Record</span>
+        <h3>Show it once.</h3>
+        <p>Click the Stackbirds extension and run your workflow like you normally would. No scripts. No setup. No clean room.</p>
+        <span class="clock">⏱ ≈ 2 minutes</span>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-tag">Step 2 · Train</span>
+        <h3>It watches and asks.</h3>
+        <p>Our model infers intent from your actions and asks clarifying questions about edge cases — in plain English, not JSON.</p>
+        <span class="clock">⏱ ≈ 5 minutes</span>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-tag">Step 3 · Delegate</span>
+        <h3>It runs. Forever.</h3>
+        <p>Deploy your agent. It runs on a schedule, on demand, or on triggers — and flags anything unusual right back to you.</p>
+        <span class="clock">⏱ ≈ forever</span>
+      </div>
+    </div>
+    <div class="grid g3 reveal" style="margin-top:var(--space-8)">
+      <div class="card"><h3>Teach by showing</h3><p>Record once. Stackbirds watches what you click, type, and decide — then builds an agent that matches your exact process.</p></div>
+      <div class="card"><h3>Asks when unsure</h3><p>Flags edge cases in plain English and waits for your call. Every answer makes the next run smarter, automatically.</p></div>
+      <div class="card"><h3>Faster every run</h3><p>A shared runtime means every agent inherits tricks from the flock. Your fifth agent trains in seconds, not minutes.</p></div>
+      <div class="card"><h3>Runs on your real stack</h3><p>Any browser app — Salesforce, HubSpot, Notion, Stripe, internal tools. No APIs, no integrations.</p></div>
+      <div class="card"><h3>Safe by default</h3><p>Isolated sandbox, full audit trails, approval gates for destructive steps. SOC 2 ready, SSO included.</p></div>
+      <div class="card"><h3>Ships in an afternoon</h3><p>Most teams are delegating real work within their first afternoon. Onboard in five minutes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY SELECTOR -->
+<section id="industry">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Select your industry</span>
+      <h2>Automation & SEO by company type.</h2>
+      <p>Pick your industry and get the exact automation templates and SEO/AEO keyword sets Stackbirds ships for it — no tech knowledge required.</p>
+    </div>
+    <div class="industry-pick reveal" id="ind-pick"></div>
+    <div class="ind-panel reveal" id="ind-panel"></div>
+  </div>
+</section>
+
+<!-- TEMPLATES -->
+<section id="templates" style="background:var(--color-surface-2);border-block:1px solid var(--color-divider)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Plug & play templates</span>
+      <h2>Templates for every AI automation workflow.</h2>
+      <p>Every template is a recorded Stackbird you install in one click — no code, no setup. Just plug and play.</p>
+    </div>
+    <div class="grid g4 reveal" id="tpl-grid"></div>
+  </div>
+</section>
+
+<!-- VOICE BOT GUIDE -->
+<section id="voice">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Voice bot audio guide</span>
+      <h2>Hear how it works. Just press play.</h2>
+      <p>A 40-second voice walkthrough of the entire Stackbirds process — record, train, delegate — narrated by the Stackbirds voice bot. Listen instead of reading.</p>
+    </div>
+    <div class="voice reveal">
+      <div class="voice-card">
+        <div class="vc-top">
+          <div class="vc-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+          <div>
+            <div class="vc-name">Stackbirds Voice Bot</div>
+            <div class="vc-status">Guide ready · 0:40</div>
+        </div>
+        </div>
+        <div class="wave" id="wave"></div>
+        <div class="vc-controls">
+          <button class="vc-play" id="vc-play" aria-label="Play voice guide">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="vc-icon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <div class="vc-bar"><i id="vc-prog"></i></div>
+          <span class="vc-time" id="vc-time">0:00 / 0:40</span>
+        </div>
+        <audio id="vc-audio" preload="metadata" src="assets/voicebot-guide.mp3"></audio>
+      </div>
+      <div class="transcript">
+        <h4>Transcript</h4>
+        <p id="vc-text">Hi, this is Stackbirds. The world's first self-trained agent. Here's how simple it is. Step one: open your browser and do the task once — click, type, decide — exactly like you normally would. The Stackbirds extension watches and learns. No prompts, no code, no setup. Step two: Stackbirds infers your intent and asks plain-English questions about any edge cases it's unsure about. Answer once, and every future run gets smarter. Step three: deploy your agent. It runs forever — on a schedule, on demand, or on a trigger — and flags anything unusual back to you. Add Stackbirds dot xyz to your Chrome, or download it to your computer, and watch the magic. No tech knowledge needed. Just plug and play.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIY MARKETING -->
+<section id="marketing" style="background:var(--color-surface-2);border-block:1px solid var(--color-divider)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">AI automation · marketing DIY</span>
+      <h2>Ship reels, posts, emails & SEO — without a team.</h2>
+      <p>The same record-once-run-forever idea, applied to daily marketing. Build each lane once with Stackbirds templates and your marketing runs itself.</p>
+    </div>
+    <div class="grid g3 reveal">
+      <div class="card"><span class="tag">Daily</span><h3>Reels on autopilot</h3><p>Record the script + posting flow once. Stackbirds drafts, edits captions, and posts a reel every morning at 9:00 GST.</p></div>
+      <div class="card"><span class="tag">Daily</span><h3>Posts & carousels</h3><p>One template turns your week's ideas into a week of scheduled posts across Instagram, LinkedIn and X.</p></div>
+      <div class="card"><span class="tag">Daily</span><h3>Email campaigns</h3><p>Record the nurture flow once. Stackbirds writes, segments and sends — then reports who opened and clicked.</p></div>
+    </div>
+    <div class="diy-list reveal">
+      <div class="diy-item"><div class="diy-num">1</div><div><h4>Pick one channel</h4><p>Start with the channel you already post on manually — reels, email, or SEO. Don't do all three at once.</p></div><span class="tool">~5 min</span></div>
+      <div class="diy-item"><div class="diy-num">2</div><div><h4>Record the flow</h4><p>Do the work once in your browser. Stackbirds watches the brief, the tool, the posting rules.</p></div><span class="tool">~2 min</span></div>
+      <div class="diy-item"><div class="diy-num">3</div><div><h4>Answer the questions</h4><p>Plain-English edge cases: brand voice, hashtag set, posting time, approval before publish.</p></div><span class="tool">~5 min</span></div>
+      <div class="diy-item"><div class="diy-num">4</div><div><h4>Schedule it forever</h4><p>Deploy on a schedule or trigger. Stackbirds ships daily — no marketing team, no babysitting.</p></div><span class="tool">forever</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Case studies · all companies</span>
+      <h2>Real builds, playing live.</h2>
+      <p>Every company below is a Stackbirds-powered automation shipped by <a href="https://azizsaif.com" style="color:var(--color-primary);font-weight:700">Aziz Saif</a> — owner-operated from Dubai, built in days not months. Several are independent demos for illustration; live client sites link to their own domain.</p>
+    </div>
+    <div class="cases reveal" id="cases-grid"></div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section>
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <span class="eyebrow">Add it. See the magic.</span>
+      <h2>Stackbirds is so simple, you'll wonder what you were doing by hand.</h2>
+      <p>No tech knowledge. No code. No prompts. No babysitting. Just plug and play — install the extension or download the app, record one workflow, and watch it run forever.</p>
+      <div class="btn-row">
+        <a class="btn btn-accent" href="#get">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="M21.17 8H12M3.95 6.06l4.09 7.09M10.88 21.94l4.09-7.09"/></svg>
+          Add Stackbirds.xyz to Chrome
+        </a>
+        <a class="btn btn-primary" href="#get">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+          Download to your computer
+        </a>
+        <a class="btn btn-ghost" href="https://azizsaif.com" target="_blank" rel="noopener">Book a consultation →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Questions</span>
+      <h2>Asked all the time.</h2>
+    </div>
+    <div class="faq reveal" id="faq-list"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#top" class="brand">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect width="40" height="40" rx="10" fill="var(--color-primary)"/>
+            <path d="M9 27 L16 13 L20.5 21 L25 11 L31 27 Z" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="31" cy="27" r="2.4" fill="var(--color-accent)"/>
+          </svg>
+          Stackbirds
+        </a>
+        <p>The world's first self-trained agent. Record any browser workflow once — it runs forever. No prompts, no code, no babysitting.</p>
+      </div>
+      <div>
+        <h5>Get it</h5>
+        <ul>
+          <li><a href="#get">Add to Chrome</a></li>
+          <li><a href="#get">Download app</a></li>
+          <li><a href="#demo">Live demo</a></li>
+          <li><a href="https://stackbirds.xyz" target="_blank" rel="noopener">stackbirds.xyz</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="#templates">Templates</a></li>
+          <li><a href="#voice">Voice guide</a></li>
+          <li><a href="#marketing">DIY marketing</a></li>
+          <li><a href="#cases">Case studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Built by</h5>
+        <ul>
+          <li><a href="https://azizsaif.com" target="_blank" rel="noopener">Aziz Saif — Dubai</a></li>
+          <li><a href="mailto:hello@stackbirds.xyz">hello@stackbirds.xyz</a></li>
+          <li><a href="mailto:aziz@azizsaif.com">aziz@azizsaif.com</a></li>
+          <li><a href="https://wa.me/971556492370" target="_blank" rel="noopener">WhatsApp +971 55 649 2370</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>★ shipped /* gulf */ — owner-operated, days not months.</span>
+    <span>Independent demo. Live client sites link to their own domain. <a href="https://azizsaif.com" target="_blank" rel="noopener">azizsaif.com</a></span>
+  </div>
+</footer>
+
+<script>
+/* ===== Theme ===== */
+(function(){
+  var r=document.documentElement, t=document.querySelector('[data-theme-toggle]');
+  var d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme', d);
+  function icon(x){ return x==='dark'
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; }
+  t.addEventListener('click', function(){ d = d==='dark'?'light':'dark'; r.setAttribute('data-theme', d); t.innerHTML = icon(d); t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode'); });
+})();
+
+/* ===== Reveal on scroll ===== */
+(function(){
+  var io = new IntersectionObserver(function(e){ e.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} }); }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+
+/* ===== Interactive demo ===== */
+(function(){
+  var steps=[...document.querySelectorAll('.dstep')], pans=[...document.querySelectorAll('.screen-pan')];
+  var i=0, timer=null;
+  function show(n){
+    i=n; steps.forEach(function(s,x){ s.classList.toggle('active',x===n); s.classList.toggle('done',x<n); });
+    pans.forEach(function(p,x){ p.classList.toggle('on',x===n); });
+  }
+  function next(){ show((i+1)%3); }
+  function play(){ clearInterval(timer); timer=setInterval(next,4200); }
+  play();
+  steps.forEach(function(s,x){ s.addEventListener('click',function(){ clearInterval(timer); show(x); play(); }); });
+  document.getElementById('replay').addEventListener('click', function(){ clearInterval(timer); show(0); play(); });
+})();
+
+/* ===== Industry selector ===== */
+var IND = [
+  {key:'Fashion retail', icon:'🛍', flows:['13 agents: storefront, photo studio, social, ERP, finance, recruitment','Auto-tag new stock photos and publish to storefront','Daily reel from new arrivals','Reorder alerts when stock hits threshold'], seo:['dubai fashion online store','gcc womenswear','abaya shop dubai','modest fashion uae']},
+  {key:'Private chefs', icon:'🍽', flows:['Booking-ready site with daily AI marketing engine','Auto-confirm bookings and sync to calendar','Daily reel + post + email on schedule','Dietary-filter menu personalization'], seo:['private chef dubai','home chef uae','private dining dubai','chef at home gcc']},
+  {key:'Trading', icon:'📦', flows:['Quotation comparison from PDF/Excel/ZIP into one dashboard','Auto-generate proforma invoices','LC document checklist automation','Supplier price-tracker running daily'], seo:['trading company dubai','gcc import export','wholesale supplier uae','commodity trading gcc']},
+  {key:'Manufacturing', icon:'🏭', flows:['Production line output reporting from shop-floor sheets','Inventory reorder automation','Daily machine-downtime digest','Quality-check log capture'], seo:['manufacturer uae','factory dubai','industrial supplier gcc','production automation uae']},
+  {key:'Recruitment', icon:'🧑‍💼', flows:['CV sorting and shortlist generation from a folder of PDFs','Auto-schedule interviews to candidate + interviewer calendars','Reference-check email flow','Weekly pipeline report to clients'], seo:['recruitment agency dubai','staffing uae','ai recruiter gcc','cv screening automation']},
+  {key:'Real estate', icon:'🏢', flows:['New-listing auto-publish across portals','Lead capture from web form → CRM → WhatsApp','Daily price-comparison report on tracked areas','Booking view & deposit reminder flow'], seo:['real estate dubai','property uae','dubai property for sale','realty gcc']},
+  {key:'Healthcare', icon:'🩺', flows:['Patient appointment reminders via WhatsApp','Daily no-show report to clinic admin','Insurance pre-approval status tracker','Prescription refill alerts'], seo:['clinic dubai','healthcare uae','doctor appointment uae','medical center gcc']},
+  {key:'Finance & accounting', icon:'📊', flows:['Auditor-style report from bank statements + books → A4 PDF','Expenses capture: statements + receipts → one ledger','Quotation comparison dashboard','WPS payroll split automation'], seo:['accounting firm dubai','bookkeeping uae','wps payroll gcc','vat filing uae']},
+  {key:'F&B / Restaurants', icon:'🍔', flows:['Daily reel + post + email marketing engine','Reservation confirmations and no-show reminders','Daily specials auto-posted','Inventory + wastage tracking'], seo:['restaurant dubai','cafe uae','cloud kitchen gcc','food delivery dubai']},
+  {key:'E-commerce', icon:'🛒', flows:['Abandoned-cart recovery emails','Auto-publish new products to all channels','Daily ad-creative testing report','Order-fulfillment status sync'], seo:['online store uae','ecommerce dubai','d2c brand gcc','shopify uae']},
+  {key:'Education', icon:'🎓', flows:['Student enquiry → enrolment flow','Daily attendance and fee reminders','Auto-generate progress reports','Course-content scheduling'], seo:['training institute dubai','online course uae','skill center gcc','elearning uae']},
+  {key:'Salon & grooming', icon:'💈', flows:['Booking + stylist assignment automation','WhatsApp reminder 2 hours before','Reorder retail product alerts','Daily marketing reel'], seo:['salon dubai','barber uae','grooming gcc','beauty salon uae']},
+];
+var pick = document.getElementById('ind-pick');
+IND.forEach(function(it,x){
+  var b=document.createElement('button'); b.className='ind-btn'+(x===0?' on':''); b.textContent=it.icon+' '+it.key; b.dataset.x=x;
+  b.addEventListener('click', function(){ renderInd(x); pick.querySelectorAll('.ind-btn').forEach(function(z){z.classList.remove('on');}); b.classList.add('on'); });
+  pick.appendChild(b);
+});
+function renderInd(x){
+  var it=IND[x];
+  document.getElementById('ind-panel').innerHTML =
+    '<div class="ind-head"><span class="badge">'+it.icon+'</span><h3>'+it.key+'</h3></div>'+
+    '<div class="ind-cols"><ul class="ind-list">'+
+      it.flows.map(function(f){ return '<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'+f+'</li>'; }).join('')+
+    '</ul><div class="seo-box"><h4>Automation SEO by company type</h4><p>Stackbirds ships this industry ranked for the searches your buyers actually make — answer-engine and generative-engine ready, not just Google.</p><div class="seo-kw">'+
+      it.seo.map(function(k){ return '<span>'+k+'</span>'; }).join('')+
+    '</div></div></div>';
+}
+renderInd(0);
+
+/* ===== Templates ===== */
+var TPL = [
+  ['📑','Bank reconciliation','Statements + books in → print-ready A4 audit PDF out.'],
+  ['🧾','Expenses capture','Receipts, statements, handwritten bills → one ledger for ERP.'],
+  ['⚖️','Quotation comparison','PDF/Excel/ZIP quotes → one dashboard with a recommendation.'],
+  ['💬','WhatsApp auto-reply','Record the reply rules once — the line answers itself forever.'],
+  ['📱','Social scheduler','One template → a week of scheduled posts across channels.'],
+  ['🎬','Reels generator','Brief in → captioned reel drafted and posted every morning.'],
+  ['✉️','Email campaign','Nurture flow recorded once → writes, segments, sends, reports.'],
+  ['🔍','SEO / AEO / GEO','One-click on-page + answer-engine optimization per industry.'],
+  ['💵','WPS payroll split','Payroll file → WPS-compliant SIF split, ready for bank.'],
+  ['📄','CV sorting','Folder of CV PDFs → ranked shortlist with match scores.'],
+  ['🧲','Lead capture','Web form → CRM → WhatsApp, with instant reply.'],
+  ['🧾','Invoice processing','Inbox invoices → extracted, filed, matched to POs.'],
+  ['📅','Booking & reminders','Bookings confirmed; reminders 2 hours before; no-show report.'],
+  ['📈','Competitor price-watch','Daily price comparison across competitors → digest to Slack.'],
+  ['🗂','Document checklist','Auto-collect, verify and chase missing onboarding docs.'],
+  ['🔁','Reorder alerts','Stock hits threshold → reorder draft + supplier email.'],
+];
+document.getElementById('tpl-grid').innerHTML = TPL.map(function(t){
+  return '<div class="card"><div class="ico" style="font-size:20px">'+t[0]+'</div><h3>'+t[1]+'</h3><p>'+t[2]+'</p><p style="margin-top:var(--space-3);font-weight:700;color:var(--color-accent)">One click · plug & play →</p></div>';
+}).join('');
+
+/* ===== Case studies ===== */
+var CASES = [
+  ['Le Pearl Fashion','Fashion retail','13 AI agents running a GCC fashion retailer — storefront, photo studio, social, ERP, finance, recruitment, all in parallel.','~3 days'],
+  ['EatCookJoy UAE','Private chefs','Booking-ready brand site + daily AI marketing engine shipping reels, posts and emails with no marketing team.','~2 days'],
+  ['Stackbirds','Productivity','Record once, run forever. The self-trained browser agent this page is built around.','~2 days'],
+  ['Maroten','Multi-brand retail','Multi-brand inventory sync + daily price comparison across vendors.','~2 days'],
+  ['Zainab Ghadiyali','Founder profile','Founder brand site + automated inbound enquiry triage.','~1 day'],
+  ['Kakal Brothers','Trading','Quotation comparison dashboard + proforma invoice automation.','~2 days'],
+  ['Tarkash GCC','Infrastructure','Daily site-progress report from field sheets + reorder alerts.','~3 days'],
+  ['Sana Consult','Youth care','Enquiry → enrolment flow + weekly progress reports to parents.','~2 days'],
+  ['Dr. Hadi Shahid','Legacy site','Legacy practice site + appointment reminder bot.','~1 day'],
+  ['Le Pearl — AI Workforce','AI demo','Live demo of the full 13-agent workforce for a fashion retailer.','~3 days'],
+  ['Elegance Saloon','Grooming','Booking + stylist assignment + 2-hour WhatsApp reminders.','~1 day'],
+  ['Tarkash FZE','Workforce','Workforce roster + payroll WPS split automation.','~2 days'],
+  ['Azizsaif Talent','Recruitment','CV sorting + auto shortlist + interview scheduling.','~2 days'],
+  ['Snellito','Recipe AI','Recipe generation + daily social content pipeline.','~2 days'],
+  ['CVfast','AI recruiter','Inbound CV → ranked shortlist + auto-outreach.','~2 days'],
+  ['Vastra Modular','Couture pitch','Pitch deck + automated follow-up sequence to buyers.','~1 day'],
+  ['Savitha','Bridal pitch','Bridal pitch site + enquiry capture to WhatsApp.','~1 day'],
+  ['Iqbal Abdul Sattar','Founder bio','Founder bio site + automated inbound handling.','~1 day'],
+  ['Abdul Quddus Sheikh','Founder bio','Founder bio site + scheduled thought-leadership posts.','~1 day'],
+  ['Asif Mahadik','Portfolio bio','Portfolio site + auto case-study publishing.','~1 day'],
+  ['City Walk study','Retail feasibility','Feasibility model + daily footfall-data digest.','~2 days'],
+  ['Machinist Kiosk','Kiosk feasibility','Feasibility study + automated vendor quote comparison.','~2 days'],
+  ['TeamPulse','Workforce SaaS','Live SaaS demo + lead-capture → CRM → WhatsApp.','~3 days'],
+];
+document.getElementById('cases-grid').innerHTML = CASES.map(function(c,x){
+  return '<div class="case"><div class="row1"><span class="num">'+String(x+1).padStart(2,'0')+'</span><span class="type">'+c[1]+'</span></div><h3>'+c[0]+'</h3><p>'+c[2]+'</p><div class="stat">Built in '+c[3]+' · owner-operated</div></div>';
+}).join('');
+
+/* ===== FAQ ===== */
+var FAQ = [
+  ['What is Stackbirds?','A browser-automation platform that turns a one-time screen recording of a workflow into an autonomous agent that re-runs it for you — on a schedule, on demand, or on triggers.'],
+  ['Do I need to write code or prompts?','No. You teach Stackbirds by showing it the workflow once. No scripts, prompts, or glue code to write or babysit. It is genuinely plug and play.'],
+  ['How long does setup take?','Most teams onboard in five minutes and train their first agent in ten. Later agents train even faster thanks to the shared runtime.'],
+  ['How much does it cost?','Your first agent trains free — no credit card, no sales call.'],
+  ['How do I get it?','Add Stackbirds.xyz to Chrome, or download the app to your computer. Then record one workflow and watch the magic.'],
+  ['What apps does it work with?','Any browser-based app — Salesforce, HubSpot, Notion, Stripe, NetSuite, QuickBooks, Gmail and internal tools. No APIs or integrations to build.'],
+  ['Who built this page?','Owner-operated by Aziz Saif in Dubai. Several companies listed are independent demos for illustration; live client sites link to their own domain. See azizsaif.com.'],
+];
+var fl = document.getElementById('faq-list');
+FAQ.forEach(function(f){
+  var it=document.createElement('div'); it.className='faq-item';
+  it.innerHTML='<button class="faq-q">'+f[0]+'<span class="pm">+</span></button><div class="faq-a"><div>'+f[1]+'</div></div>';
+  var q=it.querySelector('.faq-q'), a=it.querySelector('.faq-a');
+  q.addEventListener('click', function(){
+    var open=it.classList.contains('open');
+    fl.querySelectorAll('.faq-item').forEach(function(z){ z.classList.remove('open'); z.querySelector('.faq-a').style.maxHeight=0; });
+    if(!open){ it.classList.add('open'); a.style.maxHeight=a.scrollHeight+'px'; }
+  });
+  fl.appendChild(it);
+});
+
+/* ===== Voice bot audio player ===== */
+(function(){
+  var audio=document.getElementById('vc-audio'), play=document.getElementById('vc-play'), icon=document.getElementById('vc-icon'),
+      bar=document.getElementById('vc-prog'), time=document.getElementById('vc-time'), wave=document.getElementById('wave');
+  // build waveform bars
+  for(var i=0;i<48;i++){ var b=document.createElement('i'); b.style.height=(20+Math.abs(Math.sin(i*0.5))*70)+'%'; wave.appendChild(b); }
+  function fmt(s){ s=Math.floor(s); return '0:'+String(s).padStart(2,'0'); }
+  play.addEventListener('click', function(){
+    if(audio.paused){ audio.play(); } else { audio.pause(); }
+  });
+  audio.addEventListener('play', function(){ icon.innerHTML='<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>'; wave.classList.add('playing'); });
+  audio.addEventListener('pause', function(){ icon.innerHTML='<path d="M8 5v14l11-7z"/>'; wave.classList.remove('playing'); });
+  audio.addEventListener('timeupdate', function(){
+    var p=audio.duration?(audio.currentTime/audio.duration*100):0;
+    bar.style.width=p+'%';
+    time.textContent=fmt(audio.currentTime)+' / '+(audio.duration?fmt(audio.duration):'0:40');
+  });
+  audio.addEventListener('ended', function(){ wave.classList.remove('playing'); icon.innerHTML='<path d="M8 5v14l11-7z"/>'; });
+})();
+</script>
+</body>
+</html>
